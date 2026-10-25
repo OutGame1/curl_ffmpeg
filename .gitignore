@@ -1,0 +1,22 @@
+# File d'attente et données locales
+file_attente.json
+start.lnk
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.python-version
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Fichiers temporaires
+*.tmp
+*.temp

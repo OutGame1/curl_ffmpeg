@@ -1,0 +1,38 @@
+﻿#winget install -e --id Python.Python.3.13
+#winget install -e --id Gyan.FFmpeg
+
+# Création du raccourci de démarrage
+Write-Host "Création du raccourci de démarrage..."
+
+$AppDir = $PSScriptRoot
+$PythonW = Get-Command "pythonw.exe" -ErrorAction SilentlyContinue
+
+if (-not $PythonW) {
+    $Python = Get-Command "python.exe" -ErrorAction SilentlyContinue
+
+    if ($Python) {
+        $PythonWPath = Join-Path (Split-Path $Python.Source) "pythonw.exe"
+
+        if (Test-Path -LiteralPath $PythonWPath -PathType Leaf) {
+            $PythonW = Get-Item -LiteralPath $PythonWPath
+        }
+    }
+}
+
+if (-not $PythonW) {
+    Write-Host "Impossible de trouver pythonw.exe. Le raccourci n'a pas été créé." -ForegroundColor Red
+}
+else {
+    $WshShell = New-Object -ComObject WScript.Shell
+    $ShortcutPath = Join-Path $AppDir "start.lnk"
+    $Shortcut = $WshShell.CreateShortcut($ShortcutPath)
+
+    $Shortcut.TargetPath = $PythonW.Source
+    $Shortcut.Arguments = "-m src.app"
+    $Shortcut.WorkingDirectory = $AppDir
+    $Shortcut.Description = "Démarrer curl_ffmpeg sans terminal"
+    $Shortcut.WindowStyle = 7
+    $Shortcut.Save()
+
+    Write-Host "Raccourci créé : $ShortcutPath" -ForegroundColor Green
+}
