@@ -22,13 +22,11 @@ L'application dispose d'une interface graphique, d'une file d'attente de téléc
 - FFmpeg accessible depuis le `PATH`
 - PowerShell pour exécuter le script d'installation
 
-Les versions et dépendances exactes doivent correspondre à celles utilisées par le projet.
-
 ## Installation
 
-1. Télécharge ou décompresse le projet dans un dossier.
-2. Ouvre PowerShell dans le dossier `curl_ffmpeg`.
-3. Exécute le script d'installation :
+1. Télécharger ou décompresser le projet dans un dossier.
+2. Ouvrir PowerShell dans le dossier `curl_ffmpeg`.
+3. Exécuter le script d'installation :
 
    ```powershell
    .\install.ps1
@@ -40,7 +38,7 @@ Si Windows bloque l'exécution du script, vérifie la politique d'exécution Pow
 
 ## Démarrage
 
-Après l'installation, double-clique sur :
+Après l'installation, double-cliquer sur :
 
 ```text
 start.lnk
@@ -52,20 +50,18 @@ L'application est lancée avec `pythonw.exe`, ce qui évite l'ouverture d'une fe
 
 ### 1. Récupérer une commande cURL
 
-1. Ouvre la page contenant le lecteur vidéo dans ton navigateur.
-2. Ouvre les outils de développement du navigateur, puis l'onglet **Réseau** (*Network*).
-3. Lance la lecture de la vidéo.
-4. Identifie la requête correspondant au manifeste ou au flux HLS.
-5. Si nécessaire, utilise l'option **Copier en tant que cURL** (*Copy as cURL*).
-
-La requête doit correspondre à un contenu auquel tu es autorisé à accéder.
+1. Ouvrir la page contenant le lecteur vidéo dans ton navigateur.
+2. Ouvrir les outils de développement du navigateur, puis l'onglet **Réseau** (*Network*).
+3. Lancer la lecture de la vidéo.
+4. Identifier la requête correspondant au manifeste ou au flux HLS.
+5. Utiliser l'option **Copier en tant que cURL** (*Copy as cURL*).
 
 ### 2. Ajouter un téléchargement
 
-1. Colle la commande cURL dans l'application.
-2. Renseigne les métadonnées souhaitées : titre, saison et épisode.
-3. Sélectionne le format de sortie.
-4. Ajoute le téléchargement à la file d'attente.
+1. Coller la commande cURL dans l'application.
+2. Renseigner les métadonnées souhaitées : titre, saison et épisode.
+3. Sélectionner le format de sortie.
+4. Ajouter le téléchargement à la file d'attente.
 
 ### 3. Lancer les téléchargements
 
@@ -113,21 +109,6 @@ L'option de copie des flux (`-c copy`) évite le réencodage, mais elle ne garan
 
 ## Dépannage
 
-### L'application ne démarre pas
-
-- Vérifie que Python est installé.
-- Vérifie que `src/app.py` et `src/__init__.py` existent.
-- Lance `start.ps1` depuis PowerShell pour afficher les erreurs éventuelles.
-- Vérifie que le raccourci utilise le bon dossier de travail.
-
-### FFmpeg est introuvable
-
-Vérifie que FFmpeg est installé et accessible depuis le `PATH`. Tu peux contrôler son installation avec :
-
-```powershell
-ffmpeg -version
-```
-
 ### Le téléchargement échoue
 
 - Vérifie que la commande cURL est complète.
@@ -137,25 +118,12 @@ ffmpeg -version
 
 ### Le MP4 ne peut pas être généré
 
-Certains codecs ou flux ne sont pas compatibles avec le conteneur MP4. Essaie le format MKV ou vérifie la compatibilité des flux avant de modifier les paramètres de téléchargement.
+Certains codecs ou flux ne sont pas compatibles avec le conteneur MP4. Essayer le format MKV ou vérifier la compatibilité des flux avant de modifier les paramètres de téléchargement.
 
 ## Désinstallation
 
-Exécute le script fourni :
+Exécuter le script fourni :
 
 ```powershell
 .\uninstall.ps1
 ```
-
-Vérifie le comportement de ce script avant utilisation : la suppression des données locales et la désinstallation des dépendances système sont deux opérations distinctes.
-
-## Sécurité et utilisation responsable
-
-- Utilise uniquement des flux auxquels tu es autorisé à accéder.
-- Ne partage pas les commandes cURL contenant des cookies, des jetons d'accès ou des données de session.
-- Ne publie pas de secrets dans les dépôts Git.
-- Respecte les droits d'auteur et les conditions d'utilisation des services concernés.
-
-## Licence
-
-Aucune licence n'est définie dans ce README. Ajoute un fichier `LICENSE` si tu souhaites distribuer le projet sous une licence spécifique.
