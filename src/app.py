@@ -47,8 +47,6 @@ class App(tk.Tk, QueuePersistenceMixin, HlsMixin, QueueEditorMixin, QueueWorkerM
             combo = ttk.Combobox(row, textvariable=self.format, values=("mkv", "mp4"), state="readonly", width=8)
             combo.pack(side="left", padx=6)
             combo.bind("<<ComboboxSelected>>", self.update_extension)
-            ttk.Label(row, text="FFmpeg attendu :").pack(side="left", padx=(12, 4))
-            ttk.Label(row, text=FFMPEG).pack(side="left", fill="x", expand=True)
 
             row = ttk.Frame(frame)
             row.pack(fill="x", pady=(7, 4))
@@ -79,7 +77,7 @@ class App(tk.Tk, QueuePersistenceMixin, HlsMixin, QueueEditorMixin, QueueWorkerM
             ttk.Label(frame, text="Journal FFmpeg").pack(anchor="w")
             self.log = tk.Text(frame, height=8, wrap="word", state="disabled")
             self.log.pack(fill="both", expand=True, pady=(5, 0))
-            ttk.Label(frame, text="Les téléchargements sont séquentiels et utilisent -c copy, sans réencodage. Utilise uniquement les contenus que tu es autorisé à télécharger.", wraplength=940).pack(anchor="w", pady=(8, 0))
+            ttk.Label(frame, text="Les téléchargements sont séquentiels et utilisent -c copy, sans réencodage.", wraplength=940).pack(anchor="w", pady=(8, 0))
             self.load_queue()
             self.protocol("WM_DELETE_WINDOW", self.on_close)
         def pick_output(self):

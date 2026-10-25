@@ -9,8 +9,15 @@ class QueueWorkerMixin:
         def start_queue(self):
             if self.worker and self.worker.is_alive():
                 return
-            if not os.path.isfile(FFMPEG):
-                messagebox.showerror("FFmpeg manquant", "FFmpeg est nécessaire pour télécharger les vidéos.\n\nPlace ffmpeg.exe dans le même dossier que curl_to_ffmpeg.py, puis relance le programme.\n\nEmplacement attendu :\n" + FFMPEG)
+            if not FFMPEG or not os.path.isfile(FFMPEG):
+                messagebox.showerror(
+                    "FFmpeg manquant",
+                    "FFmpeg est nécessaire pour télécharger les vidéos.\n\n"
+                    "Installe FFmpeg et vérifie qu'il est accessible depuis le PATH Windows.\n\n"
+                    "Tu peux tester son installation avec la commande :\n"
+                    "ffmpeg -version\n\n"
+                    "Redémarre ensuite l'application."
+                )
                 return
             waiting = [item for item in self.queue_items if item["status"] == "En attente"]
             if not waiting:
