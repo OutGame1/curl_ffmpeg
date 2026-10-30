@@ -4,6 +4,8 @@ winget install --id=Python.Python.3.13 -e -h --accept-package-agreements --accep
 Write-Host "Installation de FFmpeg..."
 winget install --id=Gyan.FFmpeg -e -h --accept-package-agreements --accept-source-agreements
 
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
 Write-Host "Création du raccourci de démarrage..."
 
 $AppDir = $PSScriptRoot
