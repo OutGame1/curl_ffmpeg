@@ -1,7 +1,9 @@
-﻿#winget install -e --id Python.Python.3.13
-#winget install -e --id Gyan.FFmpeg
+﻿Write-Host "Installation de Python 3.13..."
+winget install --id=Python.Python.3.13 -e -h --accept-package-agreements --accept-source-agreements
 
-# Création du raccourci de démarrage
+Write-Host "Installation de FFmpeg..."
+winget install --id=Gyan.FFmpeg -e -h --accept-package-agreements --accept-source-agreements
+
 Write-Host "Création du raccourci de démarrage..."
 
 $AppDir = $PSScriptRoot
@@ -36,3 +38,5 @@ else {
 
     Write-Host "Raccourci créé : $ShortcutPath" -ForegroundColor Green
 }
+
+pause
