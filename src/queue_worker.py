@@ -48,7 +48,12 @@ class QueueWorkerMixin:
                     video_url = audio_url = description = None
                     try:
                         self.after(0, self.log_line, "Analyse de la playlist HLS pour sélectionner la meilleure qualité…\n")
+                        
                         video_url, audio_url, description = self.select_best_hls_variant(item)
+                        print("Qualité sélectionnée :", description)
+                        print("URL vidéo sélectionnée :", video_url)
+                        print("URL audio sélectionnée :", audio_url)
+
                         if video_url:
                             self.after(0, self.log_line, f"Qualité sélectionnée : {description}\n")
                         else:

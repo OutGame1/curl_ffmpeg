@@ -10,6 +10,7 @@ class HlsMixin:
 
     def input_options(self, item):
         opts = []
+
         if item["ua"]:
             opts += ["-user_agent", item["ua"]]
 
@@ -20,7 +21,22 @@ class HlsMixin:
             opts += ["-cookies", item["cookies"]]
 
         if item["headers"]:
-            opts += ["-headers", "".join(f"{k}: {v}\r\n" for k, v in item["headers"])]
+            ignored_headers = {
+                "if-none-match",
+                "if-modified-since",
+                "if-match",
+                "if-unmodified-since",
+                "if-range",
+            }
+
+            headers = [
+                (k, v)
+                for k, v in item["headers"]
+                if k.lower() not in ignored_headers
+            ]
+
+            if headers:
+                opts += ["-headers", "".join(f"{k}: {v}\r\n" for k, v in headers)]
 
         return opts
 
@@ -60,10 +76,21 @@ class HlsMixin:
         request_headers["Pragma"] = "no-cache"
 
         def read_playlist(context=None):
+            print("En-têtes envoyés à la playlist :", list(request_headers.keys()))
+
             request = Request(item["url"], headers=request_headers)
+
+            print("=== REQUÊTE HLS ===")
+            print("URL :", request.full_url)
+            print("Méthode :", request.get_method())
+            print("En-têtes :", dict(request.header_items()))
 
             try:
                 with urlopen(request, timeout=15, context=context) as response:
+                    print("Statut HTTP :", response.status)
+                    print("URL finale :", response.url)
+                    print("En-têtes réponse :", dict(response.headers.items()))
+
                     if response.status != 200:
                         raise ValueError(
                             f"Réponse HTTP inattendue : {response.status}"
@@ -74,7 +101,14 @@ class HlsMixin:
                     if not content:
                         raise ValueError("La playlist HLS reçue est vide.")
 
-                    return content.decode("utf-8-sig", errors="replace")
+                    playlist = content.decode("utf-8", errors="replace")
+
+                    print("Taille de la playlist :", len(content))
+                    print("Début de la playlist :", repr(playlist[:300]))
+                    print("Master playlist :", "#EXT-X-STREAM-INF" in playlist)
+                    print("Nombre de variantes :", playlist.count("#EXT-X-STREAM-INF:"))
+
+                    return playlist
 
             except HTTPError as exc:
                 if exc.code == 304:
@@ -100,8 +134,12 @@ class HlsMixin:
                 ssl._create_unverified_context()
             )
 
-        if "#EXTM3U" not in playlist or "#EXT-X-STREAM-INF" not in playlist:
+        if "#EXTM3U" not in playlist:
             return None, None, None
+
+        # Playlist directe : elle contient les segments vidéo.
+        if "#EXTINF:" in playlist and "#EXT-X-STREAM-INF:" not in playlist:
+            return item["url"], None, "Playlist directe"
 
         audio_groups = {}
 
@@ -278,5 +316,8 @@ class HlsMixin:
             cmd += ["-movflags", "+faststart"]
 
         cmd += [item["output"]]
+
+        print("=== COMMANDE FFMPEG ===")
+        print(repr(cmd))
 
         return cmd

@@ -59,7 +59,7 @@ class QueueEditorMixin:
             for name, value in item["headers"]:
                 headers_box.insert("end", f"{name}: {value}\n")
             if not editable:
-                headers_box.configure(state="disabled", disabledforeground="#111111", background="#ffffff")
+                headers_box.configure(state="disabled", foreground="#111111", background="#ffffff")
 
             ttk.Label(form, text="Métadonnées vidéo").grid(row=5, column=0, sticky="nw", padx=(0, 10), pady=5)
             metadata_box = tk.Text(form, height=6, wrap="word")
